@@ -1,10 +1,16 @@
-part of 'ui/random_bloc.dart';
+import 'package:equatable/equatable.dart';
 
-abstract class RandomState extends Equatable {
-  const RandomState();
-}
+import '../data/random.dart';
 
-class RandomInitial extends RandomState {
+enum RandomStatus { initial, success, error, loading }
+
+class RandomState extends Equatable {
+  final RandomStatus status;
+  final List<Random> randoms;
+
+  const RandomState(
+      {this.status = RandomStatus.initial, this.randoms = const []});
+
   @override
-  List<Object> get props => [];
+  List<Object> get props => [status, randoms];
 }
