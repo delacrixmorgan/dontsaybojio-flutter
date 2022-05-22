@@ -1,3 +1,3 @@
 library random;
 
-export 'src/random_screen.dart';
+export 'src/ui/random_page.dart';

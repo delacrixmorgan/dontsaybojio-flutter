@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       GoRoute(
         path: '/random',
         builder: (BuildContext context, GoRouterState state) =>
-            const RandomScreen(),
+            const RandomPage(),
       ),
     ],
   );
