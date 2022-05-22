@@ -1,0 +1,47 @@
+name: dontsaybojio
+repository: https://github.com/delacrixmorgan/dontsaybojio-flutter
+
+versioning:
+  mode: independent
+
+packages:
+  - packages/**
+
+scripts:
+  postclean: >
+    melos exec --flutter -- "flutter clean"
+
+  lint:
+    description: Run all static analysis checks
+    run: melos run format && melos run analyze
+  format:
+    description: Format Flutter files
+    run: melos exec --fail-fast -- "flutter format --set-exit-if-changed ."
+  analyze:
+    description: Run Flutter static analyzer
+    run: melos exec -c 1 -- "flutter analyze ."
+
+  test:
+    description: Run all Flutter tests in this project
+    run: melos run test:selective --no-select
+  test:selective:
+    description: Run Flutter tests for a specific package.
+    run: |
+      melos exec --fail-fast -- \
+        "flutter test --no-pub --reporter compact --no-test-assets --test-randomize-ordering-seed random"
+    select-package:
+      flutter: true
+      dir-exists: test
+
+  dep-outdated:
+    description: Checks which dependencies have newer versions available
+    run: melos exec -c 1 -- "flutter pub outdated"
+  dep-upgrade:
+    description: Automatically upgrades package dependencies to the latest versions
+    run: melos exec -c 1 -- "flutter pub upgrade --major-versions"
+
+  codegen:
+    description: Run code generation using build_runner
+    run: melos exec -c 1 -- "flutter pub run build_runner build --delete-confliActing-outputs"
+    select-package:
+      depends-on: "build_runner"
