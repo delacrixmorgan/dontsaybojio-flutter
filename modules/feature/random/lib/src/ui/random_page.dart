@@ -1,6 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:random/src/data/injections.dart';
 import 'package:random/src/data/random_repository.dart';
 import 'package:random/src/ui/random_bloc.dart';
@@ -13,27 +14,13 @@ class RandomPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     setupDataLocators();
-
     return BlocProvider(
-      create: (context) =>
-          RandomBloc(randomRepository: RandomRepository())
-            ..add(const Start()),
-      child: Scaffold(
-        appBar: AppBar(title: const Text("Random")),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              const RandomListView(),
-              ElevatedButton(
-                onPressed: () => context.go('/page2'),
-                child: const Text('Go to page 2'),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+        create: (context) =>
+            RandomBloc(randomRepository: getIt.get<RandomRepository>())
+              ..add(const Start()),
+        child: Scaffold(
+            appBar: AppBar(title: const Text("Random")),
+            body: const RandomListView()));
   }
 }
 
@@ -47,6 +34,7 @@ class RandomListView extends StatelessWidget {
         BlocListener<RandomBloc, RandomState>(listener: (context, state) {})
       ],
       child: BlocBuilder<RandomBloc, RandomState>(builder: (context, state) {
+        log('State: $state');
         if (state.randoms.isEmpty) {
           if (state.state == RandomStatus.loading) {
             return const Center(child: CircularProgressIndicator());
@@ -62,9 +50,13 @@ class RandomListView extends StatelessWidget {
           }
         }
 
+        for (final random in state.randoms) {
+          log('Random: ${random.text}');
+        }
+
         return Scrollbar(
           child: ListView.separated(
-            padding: const EdgeInsets.only(top: 4),
+            padding: const EdgeInsets.all(16),
             scrollDirection: Axis.vertical,
             itemCount: state.randoms.length,
             itemBuilder: (context, index) {

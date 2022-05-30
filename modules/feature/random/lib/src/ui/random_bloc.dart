@@ -16,7 +16,8 @@ class RandomBloc extends Bloc<RandomEvent, RandomState> {
     emit(state.copyWith(state: () => RandomStatus.loading));
 
     final items = _randomRepository.getRandoms();
-    state.copyWith(state: () => RandomStatus.success, randoms: () => items);
+    emit(state.copyWith(
+        state: () => RandomStatus.success, randoms: () => items));
 
     // await emit.forEach<List<Random>>(_randomRepository.getRandoms(),
     //     onData: (items) =>
