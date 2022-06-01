@@ -54,23 +54,55 @@ class RandomListView extends StatelessWidget {
           log('Random: ${random.text}');
         }
 
-        return Scrollbar(
-          child: ListView.separated(
-            padding: const EdgeInsets.all(16),
-            scrollDirection: Axis.vertical,
-            itemCount: state.randoms.length,
-            itemBuilder: (context, index) {
-              final item = state.randoms[index];
-              final bloc = context.read<RandomBloc>();
+        final random = state.randoms[0].text;
 
-              return Text(item.text);
-            },
-            separatorBuilder: (context, index) {
-              return const SizedBox(height: 0);
-            },
-          ),
-        );
+        return Center(
+            child: Card(
+                margin: const EdgeInsets.all(32.0),
+                child: Padding(
+                    padding: const EdgeInsets.all(32.0),
+                    child: Wrap(
+                      children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(random,
+                                style: Theme.of(context).textTheme.headline2),
+                            const SizedBox(height: 32),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: filterChips(context, state),
+                            ),
+                            const SizedBox(height: 16),
+                            FloatingActionButton.extended(
+                              label: const Text('Random'),
+                              icon: const Icon(Icons.shuffle_rounded),
+                              onPressed: () {},
+                            )
+                          ],
+                        ),
+                      ],
+                    ))));
       }),
     );
+  }
+
+  List<FilterChip> filterChips(BuildContext context, RandomState state) {
+    final List<FilterChip> chips = [];
+    for (final randomType in state.randomSelectableTypes) {
+      chips.add(FilterChip(
+        label: Text(randomType.type.name.toString()),
+        selected: randomType.isSelected,
+        onSelected: (bool value) {
+          randomType.isSelected = value;
+          context
+              .read<RandomBloc>()
+              .add(FiltersUpdated(state.randoms, state.randomSelectableTypes));
+        },
+      ));
+    }
+    return chips;
   }
 }

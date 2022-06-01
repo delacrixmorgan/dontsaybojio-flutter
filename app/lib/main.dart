@@ -14,6 +14,8 @@ class MyApp extends StatelessWidget {
         routeInformationParser: _router.routeInformationParser,
         routerDelegate: _router.routerDelegate,
         title: "Don't Say Bojio",
+        theme: AppTheme.light,
+        darkTheme: AppTheme.dark,
       );
 
   final GoRouter _router = GoRouter(
@@ -113,6 +115,39 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class AppTheme {
+  static ThemeData get light {
+    return ThemeData(
+      appBarTheme: const AppBarTheme(
+        color: Color(0xFF13B9FF),
+      ),
+      colorScheme: ColorScheme.fromSwatch(
+        accentColor: const Color(0xFF13B9FF),
+      ),
+      snackBarTheme: const SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
+      ),
+      toggleableActiveColor: const Color(0xFF13B9FF),
+    );
+  }
+
+  static ThemeData get dark {
+    return ThemeData(
+      appBarTheme: const AppBarTheme(
+        color: Color(0xFF13B9FF),
+      ),
+      colorScheme: ColorScheme.fromSwatch(
+        brightness: Brightness.dark,
+        accentColor: const Color(0xFF13B9FF),
+      ),
+      snackBarTheme: const SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
+      ),
+      toggleableActiveColor: const Color(0xFF13B9FF),
     );
   }
 }

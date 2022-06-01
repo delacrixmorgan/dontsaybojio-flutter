@@ -15,9 +15,20 @@ class Start extends RandomEvent {
 
 class Loaded extends RandomEvent {
   final List<Random> randoms;
+  final List<RandomSelectableType> randomSelectableTypes;
 
-  const Loaded(this.randoms);
+  const Loaded(this.randoms, this.randomSelectableTypes);
 
   @override
-  List<Object?> get props => [randoms];
+  List<Object?> get props => [randoms, randomSelectableTypes];
+}
+
+class FiltersUpdated extends RandomEvent {
+  final List<Random> randoms;
+  final List<RandomSelectableType> randomSelectableTypes;
+
+  const FiltersUpdated(this.randoms, this.randomSelectableTypes);
+
+  @override
+  List<Object?> get props => [randoms, randomSelectableTypes];
 }

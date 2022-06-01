@@ -6,3 +6,10 @@ class Random {
 }
 
 enum RandomType { words, places, people }
+
+class RandomSelectableType {
+  final RandomType type;
+  bool isSelected;
+
+  RandomSelectableType({required this.type, required this.isSelected});
+}
