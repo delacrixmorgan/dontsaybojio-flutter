@@ -29,3 +29,5 @@ class FiltersUpdated extends RandomEvent {
   @override
   List<Object?> get props => [randomSelectableTypes];
 }
+
+class RandomButtonClicked extends RandomEvent {}

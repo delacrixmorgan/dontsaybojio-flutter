@@ -20,20 +20,16 @@ class RandomBloc extends Bloc<RandomEvent, RandomState> {
         super(const RandomState()) {
     on<Start>(_onStart);
     on<FiltersUpdated>(_onFilterUpdated);
+    on<RandomButtonClicked>(_onRandomButtonClicked);
   }
 
   Future<void> _onStart(Start event, Emitter<RandomState> emit) async {
     emit(state.copyWith(state: () => RandomStatus.loading));
 
     final items = _randomRepository.getRandoms();
+    final selectableTypes = _randomRepository.getRandomSelectableTypes();
+
     items.shuffle();
-
-    var selectableTypes = [
-      RandomSelectableType(type: RandomType.words, isSelected: false),
-      RandomSelectableType(type: RandomType.people, isSelected: false),
-      RandomSelectableType(type: RandomType.places, isSelected: false),
-    ];
-
     emit(state.copyWith(
         state: () => RandomStatus.success,
         randoms: () => items,
@@ -42,11 +38,16 @@ class RandomBloc extends Bloc<RandomEvent, RandomState> {
 
   Future<void> _onFilterUpdated(
       FiltersUpdated event, Emitter<RandomState> emit) async {
-    for (final random in event.randomSelectableTypes) {
-      log('onFilterUpdated Random: ${random.type} ${random.isSelected}');
-    }
-
     emit(state.copyWith(
         randomSelectableTypes: () => event.randomSelectableTypes));
+  }
+
+  Future<void> _onRandomButtonClicked(
+      RandomButtonClicked event, Emitter<RandomState> emit) async {
+    var newPosition = state.currentPosition + 1;
+    if (newPosition >= state.randoms.length) {
+      newPosition = 0;
+    }
+    emit(state.copyWith(currentPosition: () => newPosition));
   }
 }

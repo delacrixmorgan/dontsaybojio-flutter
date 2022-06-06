@@ -28,7 +28,6 @@ class RandomListView extends StatelessWidget {
         })
       ],
       child: BlocBuilder<RandomBloc, RandomState>(builder: (context, state) {
-        log('Builder State: ${state.state.name}');
         if (state.randoms.isEmpty) {
           if (state.state == RandomStatus.loading) {
             return const Center(child: CircularProgressIndicator());
@@ -44,11 +43,7 @@ class RandomListView extends StatelessWidget {
           }
         }
 
-        for (final random in state.randoms) {
-          log('RandomListView.build Random: ${random.text}');
-        }
-
-        final random = state.randoms[0].text;
+        final random = state.randoms[state.currentPosition].text;
 
         return Center(
             child: Card(
@@ -63,7 +58,7 @@ class RandomListView extends StatelessWidget {
                           children: [
                             Text(random,
                                 style: Theme.of(context).textTheme.headline2),
-                            const SizedBox(height: 32),
+                            const SizedBox(height: 16),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -73,7 +68,9 @@ class RandomListView extends StatelessWidget {
                             FloatingActionButton.extended(
                               label: const Text('Random'),
                               icon: const Icon(Icons.shuffle_rounded),
-                              onPressed: () {},
+                              onPressed: () {
+                                onRandomButtonClicked(context);
+                              },
                             )
                           ],
                         ),
@@ -83,20 +80,29 @@ class RandomListView extends StatelessWidget {
     );
   }
 
-  List<FilterChip> filterChips(BuildContext context, RandomState state) {
-    final List<FilterChip> chips = [];
+  List<Widget> filterChips(BuildContext context, RandomState state) {
+    final List<Widget> chips = [];
     for (final randomType in state.randomSelectableTypes) {
-      chips.add(FilterChip(
-        label: Text(randomType.type.name.toString()),
-        selected: randomType.isSelected,
-        onSelected: (bool value) {
-          randomType.isSelected = value;
-          context
-              .read<RandomBloc>()
-              .add(FiltersUpdated(state.randomSelectableTypes));
-        },
-      ));
+      chips.addAll({
+        FilterChip(
+          label: Text(randomType.type.name.toString()),
+          selected: randomType.isSelected,
+          onSelected: (bool value) {
+            randomType.isSelected = value;
+            context
+                .read<RandomBloc>()
+                .add(FiltersUpdated(state.randomSelectableTypes));
+          },
+        ),
+        const SizedBox(width: 6)
+      });
     }
     return chips;
+  }
+
+  void onRandomButtonClicked(BuildContext context){
+    context
+        .read<RandomBloc>()
+        .add(RandomButtonClicked());
   }
 }
