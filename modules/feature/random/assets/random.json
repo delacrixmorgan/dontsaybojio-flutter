@@ -1,0 +1,16 @@
+{
+  "items":[
+    {
+      "text": "Silicon",
+      "type": "words"
+    },
+    {
+      "text": "San Francisco",
+      "type": "places"
+    },
+    {
+      "text": "Abe Shinzo",
+      "type": "people"
+    }
+  ]
+}

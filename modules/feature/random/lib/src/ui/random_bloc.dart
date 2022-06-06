@@ -1,10 +1,12 @@
 import 'dart:developer';
+import 'dart:js';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:random/src/data/random.dart';
 import 'package:random/src/data/random_repository.dart';
+import 'package:random/src/data/random_selectable_type.dart';
 
 part 'random_event.dart';
 
@@ -26,7 +28,7 @@ class RandomBloc extends Bloc<RandomEvent, RandomState> {
   Future<void> _onStart(Start event, Emitter<RandomState> emit) async {
     emit(state.copyWith(state: () => RandomStatus.loading));
 
-    final items = _randomRepository.getRandoms();
+    final items = await _randomRepository.getRandoms();
     final selectableTypes = _randomRepository.getRandomSelectableTypes();
 
     items.shuffle();

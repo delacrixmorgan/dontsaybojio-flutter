@@ -43,6 +43,6 @@ scripts:
 
   codegen:
     description: Run code generation using build_runner
-    run: melos exec -c 1 -- "flutter pub run build_runner build --delete-confliActing-outputs"
+    run: melos exec -c 1 -- "flutter pub run build_runner build --delete-conflicting-outputs"
     select-package:
       depends-on: "build_runner"

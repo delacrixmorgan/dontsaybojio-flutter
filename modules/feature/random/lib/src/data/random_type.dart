@@ -1,0 +1,1 @@
+enum RandomType { words, places, people }
