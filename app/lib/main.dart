@@ -10,13 +10,15 @@ class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) => MaterialApp.router(
-        routeInformationParser: _router.routeInformationParser,
-        routerDelegate: _router.routerDelegate,
-        title: "Don't Say Bojio",
-        theme: AppTheme.light,
-        darkTheme: AppTheme.dark,
-      );
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      routeInformationParser: _router.routeInformationParser,
+      routerDelegate: _router.routerDelegate,
+      title: "Don't Say Bojio",
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+    );
+  }
 
   final GoRouter _router = GoRouter(
     routes: <GoRoute>[

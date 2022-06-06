@@ -1,7 +1,6 @@
-import 'package:equatable/equatable.dart';
-import 'package:random/src/data/random.dart';
+part of 'random_bloc.dart';
 
-enum RandomStatus { initial, success, error, loading }
+enum RandomStatus { initial, success, filterUpdated, error, loading }
 
 class RandomState extends Equatable {
   const RandomState(

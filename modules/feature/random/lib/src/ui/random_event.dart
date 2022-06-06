@@ -1,6 +1,4 @@
-import 'package:equatable/equatable.dart';
-
-import '../data/random.dart';
+part of 'random_bloc.dart';
 
 abstract class RandomEvent extends Equatable {
   const RandomEvent();
@@ -24,11 +22,10 @@ class Loaded extends RandomEvent {
 }
 
 class FiltersUpdated extends RandomEvent {
-  final List<Random> randoms;
   final List<RandomSelectableType> randomSelectableTypes;
 
-  const FiltersUpdated(this.randoms, this.randomSelectableTypes);
+  const FiltersUpdated(this.randomSelectableTypes);
 
   @override
-  List<Object?> get props => [randoms, randomSelectableTypes];
+  List<Object?> get props => [randomSelectableTypes];
 }

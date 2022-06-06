@@ -1,23 +1,15 @@
-import 'dart:developer';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:random/src/data/injections.dart';
-import 'package:random/src/data/random_repository.dart';
-import 'package:random/src/ui/random_bloc.dart';
-import 'package:random/src/ui/random_event.dart';
-import 'package:random/src/ui/random_state.dart';
+part of 'random_bloc.dart';
 
 class RandomPage extends StatelessWidget {
   const RandomPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    setupDataLocators();
+    // setupDataLocators();
+    // getIt.get<RandomRepository>()
     return BlocProvider(
-        create: (context) =>
-            RandomBloc(randomRepository: getIt.get<RandomRepository>())
-              ..add(const Start()),
+        create: (context) => RandomBloc(randomRepository: RandomRepository())
+          ..add(const Start()),
         child: Scaffold(
             appBar: AppBar(title: const Text("Random")),
             body: const RandomListView()));
@@ -31,10 +23,12 @@ class RandomListView extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
-        BlocListener<RandomBloc, RandomState>(listener: (context, state) {})
+        BlocListener<RandomBloc, RandomState>(listener: (context, state) {
+          log('Listener State: ${state.state.name}');
+        })
       ],
       child: BlocBuilder<RandomBloc, RandomState>(builder: (context, state) {
-        log('State: $state');
+        log('Builder State: ${state.state.name}');
         if (state.randoms.isEmpty) {
           if (state.state == RandomStatus.loading) {
             return const Center(child: CircularProgressIndicator());
@@ -51,7 +45,7 @@ class RandomListView extends StatelessWidget {
         }
 
         for (final random in state.randoms) {
-          log('Random: ${random.text}');
+          log('RandomListView.build Random: ${random.text}');
         }
 
         final random = state.randoms[0].text;
@@ -99,7 +93,7 @@ class RandomListView extends StatelessWidget {
           randomType.isSelected = value;
           context
               .read<RandomBloc>()
-              .add(FiltersUpdated(state.randoms, state.randomSelectableTypes));
+              .add(FiltersUpdated(state.randomSelectableTypes));
         },
       ));
     }
