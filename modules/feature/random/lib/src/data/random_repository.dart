@@ -13,16 +13,11 @@ class RandomRepository {
 
     final items = <Random>[];
     json['items'].forEach((value) {
-      items.add(value);
+      items.add(Random.fromJson(value));
       log(value.toString());
     });
 
     return items;
-    // return [
-    //   Random(text: "Silicon", type: RandomType.words),
-    //   Random(text: "San Francisco", type: RandomType.places),
-    //   Random(text: "Abe Shinzo", type: RandomType.people),
-    // ];
   }
 
   List<RandomSelectableType> getRandomSelectableTypes() {

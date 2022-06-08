@@ -14,6 +14,8 @@ class RandomState {
   final List<RandomSelectableType> randomSelectableTypes;
   final int currentPosition;
 
+  List<Random> get filteredRandoms => randomSelectableTypes.filterBy(randoms).toList();
+
   RandomState copyWith(
       {RandomStatus Function()? state,
       List<Random> Function()? randoms,

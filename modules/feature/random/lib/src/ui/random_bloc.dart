@@ -47,7 +47,7 @@ class RandomBloc extends Bloc<RandomEvent, RandomState> {
   Future<void> _onRandomButtonClicked(
       RandomButtonClicked event, Emitter<RandomState> emit) async {
     var newPosition = state.currentPosition + 1;
-    if (newPosition >= state.randoms.length) {
+    if (newPosition >= state.filteredRandoms.length) {
       newPosition = 0;
     }
     emit(state.copyWith(currentPosition: () => newPosition));

@@ -5,8 +5,6 @@ class RandomPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // setupDataLocators();
-    // getIt.get<RandomRepository>()
     return BlocProvider(
         create: (context) => RandomBloc(randomRepository: RandomRepository())
           ..add(const Start()),
@@ -28,7 +26,7 @@ class RandomListView extends StatelessWidget {
         })
       ],
       child: BlocBuilder<RandomBloc, RandomState>(builder: (context, state) {
-        if (state.randoms.isEmpty) {
+        if (state.filteredRandoms.isEmpty) {
           if (state.state == RandomStatus.loading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state.state != RandomStatus.success) {
@@ -42,8 +40,7 @@ class RandomListView extends StatelessWidget {
             );
           }
         }
-
-        final random = state.randoms[state.currentPosition].text;
+        final random = state.filteredRandoms[state.currentPosition].text;
 
         return Center(
             child: Card(
